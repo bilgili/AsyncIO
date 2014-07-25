@@ -34,16 +34,16 @@ public:
      * @param jobFinishFunction When function is done, jobFinishFunction is executed.
      * @return Returns the future job.
      */
-    virtual typename FutureJobPtr< T >::type submitJob(
+    virtual typename FutureJobPtr< T >::Ptr submitJob(
             const typename FutureJob< T >::JobFunction& function,
             const typename FutureJob< T >::JobFinishFunction& jobFinishFunction = 0 )
     {
-        typename FutureJobPtr< T >::type futureJob(
+        typename FutureJobPtr< T >::Ptr futureJob(
                     new FutureJob< T >( function, jobFinishFunction ) );
         {
             boost::mutex::scoped_lock lock( mutex_ );
             if( futureJobQueue_.size() == threadPool_.size() )
-                return typename FutureJobPtr< T >::type( );
+                return typename FutureJobPtr< T >::Ptr( );
             futureJobQueue_.push_back( futureJob );
             queueEmpty_.notify_one();
         }
@@ -61,10 +61,9 @@ protected:
 
     void readLoop_( )
     {
-        std::cout << "Thread is started" << std::endl;
         while( continueReading_ )
         {
-             typename FutureJobPtr< T >::type futureJob;
+             typename FutureJobPtr< T >::Ptr futureJob;
              {
                 boost::mutex::scoped_lock lock( mutex_ );
                 if( futureJobQueue_.empty() )
@@ -85,7 +84,7 @@ protected:
     boost::condition_variable queueEmpty_;
     boost::mutex mutex_;
     bool continueReading_;
-    std::deque< typename FutureJobPtr< T >::type > futureJobQueue_;
+    std::deque< typename FutureJobPtr< T >::Ptr > futureJobQueue_;
 };
 
 }

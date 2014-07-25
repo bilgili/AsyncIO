@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(posixReadTest)
     asyncio::PosixContext context( nbReaders );
     for( size_t i = 0; i < nbReaders; ++i )
     {
-        asyncio::FutureDataPtr< asyncio::AlignedUInt8Vector >::type futureData =
+        asyncio::FutureDataPtr< asyncio::AlignedUInt8Vector >::ConstPtr futureData =
                 context.submitIO( fno, 0, dataSize );
         futureData->wait();
         BOOST_CHECK( futureData->isReady() );

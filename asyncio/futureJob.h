@@ -23,8 +23,8 @@ class FutureJob
 
 public:
 
-    typedef boost::function< bool( const FutureJob< T >&, typename FutureDataPtr< T >::type ) > JobFunction;
-    typedef boost::function< void( const FutureJob< T >&, const typename FutureDataPtr< T >::type ) > JobFinishFunction;
+    typedef boost::function< bool( const FutureJob< T >&, typename FutureDataPtr< T >::Ptr ) > JobFunction;
+    typedef boost::function< void( const FutureJob< T >&, typename FutureDataPtr< T >::ConstPtr ) > JobFinishFunction;
 
     /**
      * FutureJob is used to submit a function which sets the future data.
@@ -81,13 +81,13 @@ public:
     /**
      * @return Returns the future data.
      */
-    const typename FutureDataPtr< T >::type getFutureData( ) const { return futureDataPtr_; }
+    const typename FutureDataPtr< T >::Ptr getFutureData( ) const { return futureDataPtr_; }
 
 private:
 
     void setJobID_() { jobId_ = reinterpret_cast< std::uint64_t >( this ); }
 
-    typename FutureDataPtr< T >::type futureDataPtr_;
+    typename FutureDataPtr< T >::Ptr futureDataPtr_;
     JobFunction jobFunction_;
     JobFinishFunction jobFinishFunction_;
     JobStatus status_;

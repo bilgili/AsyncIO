@@ -32,9 +32,9 @@ public:
      * @param size Size of the data to read.
      * @return Returns the future data where user can wait on it, or get status.
      */
-    virtual FutureDataPtr< AlignedUInt8Vector >::type submitIO( int32_t file,
-                                                                int32_t pos,
-                                                                size_t size );
+    virtual FutureDataPtr< AlignedUInt8Vector >::ConstPtr submitIO( int32_t file,
+                                                                    int32_t pos,
+                                                                    size_t size );
 
 private:
 

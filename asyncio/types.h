@@ -29,13 +29,15 @@ class AIOContext;
 template< class T >
 struct FutureJobPtr
 {
-    typedef boost::shared_ptr< FutureJob< T > > type; 
+    typedef boost::shared_ptr< FutureJob< T > > Ptr;
+    typedef boost::shared_ptr< const FutureJob< T > > ConstPtr;
 };
 
 template< class T >
 struct FutureDataPtr
 {
-    typedef boost::shared_ptr< FutureData< T > > type;
+    typedef boost::shared_ptr< FutureData< T > > Ptr;
+    typedef boost::shared_ptr< const FutureData< T > > ConstPtr;
 };
 
 typedef std::vector< uint8_t, util::aligned_allocator< uint8_t, 512 > > AlignedUInt8Vector;

@@ -38,7 +38,7 @@ struct IOCBSubmitter : public iocb
     IOCBSubmitter()
     {}
 
-    void submit( FutureDataPtr< AlignedUInt8Vector >::type fd,
+    void submit( FutureDataPtr< AlignedUInt8Vector >::Ptr fd,
                  io_context_t context,
                  int32_t file,
                  int32_t pos,
@@ -54,7 +54,7 @@ struct IOCBSubmitter : public iocb
             throw libaio_exception( "io_submit", result );
     }
 
-    FutureDataPtr< AlignedUInt8Vector >::type futureData;
+    FutureDataPtr< AlignedUInt8Vector >::Ptr futureData;
     AlignedUInt8Vector data;
 };
 
@@ -74,16 +74,16 @@ AIOContext::~AIOContext()
     io_destroy( context_ );
 }
 
-FutureDataPtr< AlignedUInt8Vector >::type AIOContext::submitIO( int32_t file,
-                                                                int32_t pos,
-                                                                size_t size )
+FutureDataPtr< AlignedUInt8Vector >::ConstPtr AIOContext::submitIO( int32_t file,
+                                                                    int32_t pos,
+                                                                    size_t size )
 {
     if( currentReaderCount_ == readerCount_ )
-        return FutureDataPtr< AlignedUInt8Vector >::type();
+        return FutureDataPtr< AlignedUInt8Vector >::Ptr();
 
-    currentReaderCount_++;
+    ++currentReaderCount_;
 
-    FutureDataPtr< AlignedUInt8Vector >::type futureData( new FutureData< AlignedUInt8Vector > );
+    FutureDataPtr< AlignedUInt8Vector >::Ptr futureData( new FutureData< AlignedUInt8Vector > );
 
     // Will be deleted by the reading thread
     IOCBSubmitter *submitter = new IOCBSubmitter();
@@ -112,7 +112,7 @@ void AIOContext::readLoop_( )
         {
             const io_event& event = events[ i ];
             IOCBSubmitter* iocb = static_cast< IOCBSubmitter* >( event.obj );
-            FutureDataPtr< AlignedUInt8Vector >::type futureData = iocb->futureData;
+            FutureDataPtr< AlignedUInt8Vector >::Ptr futureData = iocb->futureData;
             futureData->setData( iocb->data );
             delete iocb;
         }

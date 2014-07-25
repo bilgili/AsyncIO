@@ -24,9 +24,9 @@ public:
      * @param size Size of the data to read.
      * @return
      */
-    virtual FutureDataPtr< AlignedUInt8Vector >::type submitIO( int32_t file,
-                                                                int32_t pos,
-                                                                size_t size ) = 0;
+    virtual FutureDataPtr< AlignedUInt8Vector >::ConstPtr submitIO( int32_t file,
+                                                                    int32_t pos,
+                                                                    size_t size ) = 0;
 
 };
 
