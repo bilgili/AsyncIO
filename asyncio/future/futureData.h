@@ -47,13 +47,13 @@ public:
      * data is ready.
      * @return Returns the data status.
      */
-    WaitStatus wait( uint32_t miliseconds = 0 ) const
+    WaitStatus wait( std::uint64_t miliseconds = std::numeric_limits< std::uint64_t >::max() ) const
     {
-        boost::posix_time::milliseconds timeout( miliseconds );
-        if( miliseconds == 0 )
-            future_.wait(  );
-        else
+        if( miliseconds != 0 )
+        {
+            boost::posix_time::milliseconds timeout( miliseconds );
             future_.timed_wait( timeout );
+        }
         return static_cast< WaitStatus >( future_.get_state() );
     }
 
@@ -63,7 +63,7 @@ public:
      * data is ready.
      * @return Returns true if data is set.
      */
-    bool tryGetData( T& data, uint32_t miliseconds = 0 )
+    bool getData( T& data, std::uint64_t miliseconds = std::numeric_limits< std::uint64_t >::max() )
     {
         wait( miliseconds );
 
@@ -72,14 +72,6 @@ public:
 
         data = future_.get();
         return true;
-    }
-
-    /**
-     * Waits until the data is set.
-     */
-    const T& waitData( )
-    {
-        return future_.get();
     }
 
     void setData( const T& data )
