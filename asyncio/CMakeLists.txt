@@ -4,9 +4,9 @@
 
 source_group(\\ FILES CMakeLists.txt)
 
-set(ASYNCIO_PUBLIC_HEADERS ${COMMON_INCLUDES} types.h context.h futureData.h posixContext.h aioContext.h )
+set(ASYNCIO_PUBLIC_HEADERS ${COMMON_INCLUDES} types.h context.h posixContext.h aioContext.h  future/futureData.h )
 set(ASYNCIO_HEADERS)
-set(ASYNCIO_SOURCES ${COMMON_SOURCES} posixContext.cpp aioContext.cpp )
+set(ASYNCIO_SOURCES ${COMMON_SOURCES} posixContext.cpp aioContext.cpp detail/aioContext.cpp detail/posixContext.cpp )
 set(ASYNCIO_LINK_LIBRARIES ${Boost_LIBRARIES} ${AIO_LIBRARIES})
 
 common_library(AsyncIO)

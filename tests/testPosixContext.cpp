@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 #include "../asyncio/types.h"
-#include "../asyncio/futureData.h"
+#include "../asyncio/future/futureData.h"
 #include "../asyncio/posixContext.h"
 
 #define BOOST_TEST_MODULE posixContext

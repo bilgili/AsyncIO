@@ -7,10 +7,8 @@ read operation result.
 ## Features
 
 AsyncIO library provides:
-* Job Pool where user can set the number of jobs in parallel.
-* Jobs which user can use his own functions to read and be notified with result.
-* Posix, AIO based reader pool
-* Future based data operations ( wait, get status, etc )
+
+* Posix, AIO based reader pool using futures
 
 ## Building from Source
 
@@ -20,10 +18,5 @@ AsyncIO library provides:
   cd AsyncIO/build
   cmake ..
   make
-```
 
-Or using Buildyard:
-
-```
-to be decided
 ```

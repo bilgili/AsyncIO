@@ -1,12 +1,15 @@
 #ifndef _posixContext_h_
 #define _posixContext_h_
 
-#include "types.h"
 #include "context.h"
-#include "futureJobPool.h"
 
 namespace asyncio
 {
+
+namespace detail
+{
+    class PosixContext;
+}
 
 /**
  * The PosixContext class is used to register asyncronous read operations with given number of readers.
@@ -38,7 +41,7 @@ public:
 
 private:
 
-    FutureJobPool< AlignedUInt8Vector > futureJobPool_;
+    detail::PosixContext* impl_;
 };
 
 }

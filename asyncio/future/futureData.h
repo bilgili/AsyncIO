@@ -1,7 +1,7 @@
 #ifndef _futureData_h_
 #define _futureData_h_
 
-#include "types.h"
+#include "../types.h"
 
 namespace asyncio
 {
@@ -79,7 +79,7 @@ public:
      */
     const T& waitData( )
     {
-        future_.get();
+        return future_.get();
     }
 
     void setData( const T& data )

@@ -1,7 +1,8 @@
 #ifndef _futureJobPool_h_
 #define _futureJobPool_h_
 
-#include "types.h"
+#include "../types.h"
+
 #include "futureJob.h"
 #include <deque>
 
@@ -34,7 +35,7 @@ public:
      * @param jobFinishFunction When function is done, jobFinishFunction is executed.
      * @return Returns the future job.
      */
-    virtual typename FutureJobPtr< T >::Ptr submitJob(
+    typename FutureJobPtr< T >::Ptr submitJob(
             const typename FutureJob< T >::JobFunction& function,
             const typename FutureJob< T >::JobFinishFunction& jobFinishFunction = 0 )
     {
@@ -42,10 +43,8 @@ public:
                     new FutureJob< T >( function, jobFinishFunction ) );
         {
             boost::mutex::scoped_lock lock( mutex_ );
-            if( futureJobQueue_.size() == threadPool_.size() )
-                return typename FutureJobPtr< T >::Ptr( );
             futureJobQueue_.push_back( futureJob );
-            queueEmpty_.notify_one();
+            queueEmpty_.notify_all();
         }
         return futureJob;
     }
@@ -68,9 +67,6 @@ protected:
                 boost::mutex::scoped_lock lock( mutex_ );
                 if( futureJobQueue_.empty() )
                     queueEmpty_.wait( lock );
-
-                if( futureJobQueue_.empty() ) // Quitting
-                    return;
 
                 futureJob = futureJobQueue_.back();
                 futureJobQueue_.pop_back();

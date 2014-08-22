@@ -1,18 +1,21 @@
 #ifndef _AIOContext_h_
 #define _AIOContext_h_
 
-#include <libaio.h>
-#include <boost/atomic.hpp>
 #include "context.h"
 
 namespace asyncio
 {
 
+namespace detail
+{
+    class AIOContext;
+}
+
+
 /**
  * The AIOContext class is used to register asyncronous read operations with given number of readers.
  * It uses the linux AIO system to submit jobs.
  */
-
 class AIOContext : public Context
 {
 
@@ -39,14 +42,8 @@ public:
                                                                     size_t size );
 private:
 
-    void initialize_( );
-    void readLoop_();
+    detail::AIOContext* impl_;
 
-    boost::thread readThread_;
-    io_context_t context_;
-    size_t readerCount_;
-    bool exitRequested_;
-    boost::atomic< size_t > currentReaderCount_;
 };
 
 }
